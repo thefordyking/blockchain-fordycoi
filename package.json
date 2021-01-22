@@ -1,0 +1,31 @@
+{
+  "name": "blockchain-fordycoin",
+  "version": "1.0.0",
+  "description": "the main blockchain of fordycoin",
+  "main": "server.js",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "savjeecoin": "^1.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thefordyking/blockchain-fordycoin.git"
+  },
+  "keywords": [
+    "blockchain",
+    "fordycoin",
+    "cryptocurrency"
+  ],
+  "author": "alex cooper",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thefordyking/blockchain-fordycoin/issues"
+  },
+  "homepage": "https://github.com/thefordyking/blockchain-fordycoin#readme"
+}
