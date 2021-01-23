@@ -14,15 +14,7 @@
     "start": "node server.js"
   },
   
-  "dependencies": {
 
-    "express": "^4.17.1",
-
-    "dotenv": "^8.2.0",
-    "savjeeCoin": "^1.0.1"
-
-  },
-  
   "repository": {
     "type": "git",
     "url": "git+https://github.com/thefordyking/blockchain-fordycoin.git"
