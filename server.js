@@ -5,7 +5,7 @@ const fs = require("fs");
 const app = express();
 const myChain = new Blockchain();
 
-let port = 3000;
+let port = process.env.PORT;
 let blockchain;
 let testpub = 'FORDYxa16d78a471e0dc4f2cdfec6fdbebde5985ce907dc35c89eee194c6713e24d57c';
 let testpriv = '8f7cedcdb0bc98e3b82711bfe25c47f4cd6755f7227f9f264772f9278d19cb67' ;
