@@ -17,7 +17,7 @@ function gotdata(data) {
   myChain.pendingTransactions = blockchain.pendingTransactions;
   myChain.miningReward = blockchain.miningReward;
  // maketx();
-testb();
+
 }
 
   fs.readFile("fordycoin-blockchain.json", (err, data) => gotdata(data));
@@ -41,19 +41,6 @@ function maketx() {
   console.log(myChain.getBalanceOfAddress(testpub));
 }
 
-function testb() {
-  let start, end;
-  start = Date.now();
-  console.log('starting  test');
-  let tx = new Transaction(null, "mine", 0.01);
-  tx.signTransaction(null);
-  myChain.addTransaction(tx);
-  myChain.minePendingTransactions(testpub);
-  end = Date.now();
-  let time = end - start;
-    fs.writeFile("results.txt", `${time}`, err => console.log("test results saved!!!!!"));
-  console.log(time);
-}
 
 app.get("/", (req, res) => {
   console.log("request recived");
