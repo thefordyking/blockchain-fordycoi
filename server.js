@@ -1,14 +1,42 @@
 console.log("starting blockchain node...");
+const http = require("http");
+const url = require("url");
 const { Blockchain, Transaction } = require("savjeecoin");
-const express = require("express");
 const fs = require("fs");
-const app = express();
-const myChain = new Blockchain();
 
-let port = 3000;
+let port = process.env.PORT || 3000;
+const myChain = new Blockchain();
 let blockchain;
 let testpub = 'FORDYxa16d78a471e0dc4f2cdfec6fdbebde5985ce907dc35c89eee194c6713e24d57c';
 let testpriv = '8f7cedcdb0bc98e3b82711bfe25c47f4cd6755f7227f9f264772f9278d19cb67' ;
+
+const server = http.createServer(function(req, res) {
+  let parsedURL = url.parse(req.url, true);
+  let path = parsedURL.pathname;
+  path = path.replace(/^\/+|\/+$/g, "");
+  let qs = parsedURL.query;
+  let headers = req.headers;
+  let method = req.method.toLowerCase();
+
+  req.on("data", function() {
+    //if no data is passed we don't see this messagee
+    //but we still need the handler so the "end" function works.
+  });
+  req.on("end", function() {
+    //request part is finished... we can send a response now
+    //we will use the standardized version of the path
+    let route =
+      typeof routes[path] !== "undefined" ? routes[path] : routes["notFound"];
+    let data = {
+      path: path,
+      queryString: qs,
+      headers: headers,
+      method: method
+    };
+    route(data, res);
+  });
+});
+
 
 function gotdata(data) {
   blockchain = JSON.parse(data);
@@ -17,7 +45,7 @@ function gotdata(data) {
   myChain.pendingTransactions = blockchain.pendingTransactions;
   myChain.miningReward = blockchain.miningReward;
  // maketx();
-testb();
+  //test();
 }
 
   fs.readFile("fordycoin-blockchain.json", (err, data) => gotdata(data));
@@ -41,32 +69,47 @@ function maketx() {
   console.log(myChain.getBalanceOfAddress(testpub));
 }
 
-function testb() {
-  let start, end;
-  start = Date.now();
-  console.log('starting  test');
-  let tx = new Transaction(null, "mine", 0.01);
-  tx.signTransaction(null);
-  myChain.addTransaction(tx);
-  myChain.minePendingTransactions(testpub);
-  end = Date.now();
-  let time = end - start;
-    fs.writeFile("results.txt", `${time}`, err => console.log("test results saved!!!!!"));
-  console.log(time);
+function test() {
+    console.log('starting test');
+    let tx = new Transaction(null, "mine", 0.01);
+    tx.signTransaction(null);
+    myChain.addTransaction(tx);
+    let time = Date.now();
+    myChain.minePendingTransactions(testpub);
+    console.log(Date.now() - time);
 }
 
-app.get("/", (req, res) => {
-  console.log("request recived");
-  res.send("Hello World!");
-});
-
-app.get("/all", (request, response) => {
+function  reqall() {
   console.log("requst recived");
   let data = { x: 5 };
-  response.json(data);
-  response.send();
-});
+  return data;
+}
 
-app.listen(port, () =>{
-console.log(`blockchain node listening at http://localhost:${port}`);
+let routes = {
+  "all": function(data, res) {
+    let payload = reqall();
+    let payloadStr = JSON.stringify(payload);
+    res.setHeader("Content-Type", "application/json");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.writeHead(200);
+    res.write(payloadStr);
+    res.end("\n");
+  },
+  notFound: function(data, res) {
+    let payload = {
+      message: "File Not Found",
+      code: 404
+    };
+    let payloadStr = JSON.stringify(payload);
+    res.setHeader("Content-Type", "application/json");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.writeHead(404);
+
+    res.write(payloadStr);
+    res.end("\n");
+  }
+};
+
+server.listen(port, () =>{
+  console.log(`Listening on port ${port}`);
 });
