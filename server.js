@@ -3,9 +3,9 @@ const http = require("http");
 const url = require("url");
 const { Blockchain, Transaction } = require("savjeecoin");
 const fs = require("fs");
-
-let port = process.env.PORT || 3000;
 const myChain = new Blockchain();
+
+let port = process.env.PORT || 3000
 let blockchain;
 let testpub = 'FORDYxa16d78a471e0dc4f2cdfec6fdbebde5985ce907dc35c89eee194c6713e24d57c';
 let testpriv = '8f7cedcdb0bc98e3b82711bfe25c47f4cd6755f7227f9f264772f9278d19cb67' ;
@@ -45,7 +45,6 @@ function gotdata(data) {
   myChain.pendingTransactions = blockchain.pendingTransactions;
   myChain.miningReward = blockchain.miningReward;
  // maketx();
-  //test();
 }
 
   fs.readFile("fordycoin-blockchain.json", (err, data) => gotdata(data));
@@ -67,16 +66,6 @@ function maketx() {
   myChain.minePendingTransactions(testpub);
   //console.log(myChain);
   console.log(myChain.getBalanceOfAddress(testpub));
-}
-
-function test() {
-    console.log('starting test');
-    let tx = new Transaction(null, "mine", 0.01);
-    tx.signTransaction(null);
-    myChain.addTransaction(tx);
-    let time = Date.now();
-    myChain.minePendingTransactions(testpub);
-    console.log(Date.now() - time);
 }
 
 function  reqall() {
@@ -108,8 +97,9 @@ let routes = {
     res.write(payloadStr);
     res.end("\n");
   }
-};
+}
 
 server.listen(port, () =>{
-  console.log(`Listening on port ${port}`);
+console.log(`blockchain node listening at http://localhost:${port}`);
 });
+>>>>>>> 7977c38041d3f060b99cc1fbd2a20fba2f326f68
