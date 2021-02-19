@@ -102,4 +102,4 @@ let routes = {
 server.listen(port, () =>{
 console.log(`blockchain node listening at http://localhost:${port}`);
 });
->>>>>>> 7977c38041d3f060b99cc1fbd2a20fba2f326f68
+
